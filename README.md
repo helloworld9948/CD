@@ -112,5 +112,40 @@ gcc lex.yy.c -o lexer -ll
 ./lexer
 
 ```
+2. Lex Program (lexer.l)
 
+Create a file named lexer.l and add the following Lex code:
+
+%{
+#include <stdio.h>
+
+int lineCount = 1; // Variable to count lines
+%}
+
+// Definitions Section
+DIGIT       [0-9]
+LETTER      [a-zA-Z]
+IDENTIFIER  ({LETTER})({LETTER}|{DIGIT})*
+CONSTANT    ({DIGIT})+
+OPERATOR    [-+*/=]
+COMMENT     \/\/[^\n]*
+
+// Rules Section
+%%
+\n          { lineCount++; } // Count lines
+{IDENTIFIER} { printf("Identifier: %s\n", yytext); }
+{CONSTANT}   { printf("Constant: %s\n", yytext); }
+{OPERATOR}   { printf("Operator: %s\n", yytext); }
+{COMMENT}    { printf("Comment: %s\n", yytext); }
+.            { printf("Invalid: %s\n", yytext); }
+%%
+
+// Main Function
+int main() {
+    yylex();
+    return 0;
+}
+
+
+---
 
