@@ -116,37 +116,41 @@ gcc lex.yy.c -o lexer -ll
 
 ```c
 
-Create a file named lexer.l and add the following Lex code:
 
 %{
-#include <stdio.h>
 
-int lineCount = 1; // Variable to count lines
+include <stdio.h>
+int lineCount = 1;
 %}
 
-// Definitions Section
-DIGIT       [0-9]
-LETTER      [a-zA-Z]
-IDENTIFIER  ({LETTER})({LETTER}|{DIGIT})*
-CONSTANT    ({DIGIT})+
-OPERATOR    [-+*/=]
-COMMENT     \/\/[^\n]*
+DIGIT [0-9]
+LETTER [a-zA-Z]
+IDENTIFIER ({LETTER})({LETTER}|{DIGIT})
+CONSTANT ({DIGIT})+
+OPERATOR [-+/=]
+COMMENT \/\/[^\n]*
+WHITESPACE [ \t]+
 
-// Rules Section
 %%
-\n          { lineCount++; } // Count lines
+\n { lineCount++; }
 {IDENTIFIER} { printf("Identifier: %s\n", yytext); }
-{CONSTANT}   { printf("Constant: %s\n", yytext); }
-{OPERATOR}   { printf("Operator: %s\n", yytext); }
-{COMMENT}    { printf("Comment: %s\n", yytext); }
-.            { printf("Invalid: %s\n", yytext); }
+{CONSTANT} { printf("Constant: %s\n", yytext); }
+{OPERATOR} { printf("Operator: %s\n", yytext); }
+{COMMENT} { printf("Comment: %s\n", yytext); }
+{WHITESPACE} { / Ignore whitespace / }
+. { printf("Invalid: %s\n", yytext); }
 %%
 
-// Main Function
 int main() {
-    yylex();
-    return 0;
+yylex();
+return 0;
 }
+
+int yywrap() {
+return 1;
+}
+
+
 ```
 
 ---
