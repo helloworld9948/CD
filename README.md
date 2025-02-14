@@ -114,6 +114,8 @@ gcc lex.yy.c -o lexer -ll
 ```
 2. Lex Program (lexer.l)
 
+```c
+
 Create a file named lexer.l and add the following Lex code:
 
 %{
@@ -145,7 +147,7 @@ int main() {
     yylex();
     return 0;
 }
-
+```
 
 ---
 
